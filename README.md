@@ -44,4 +44,6 @@ git clone https://github.com/bryndin/provo
 
 ## Modules
 
-[Modules Docs](https://github.com/bryndin/provo/blob/master/modules/README.md) cover the Modules and Action Scripts structure and explain how to create modules.
+*Modules* are the core concept in Provo, representing units of provisioning logic. Convert your automation scripts into Provo's *modules* to leverage the framework's capabilities for organizing, managing, and running these scripts in a standardized manner.
+
+[Modules Docs](https://github.com/bryndin/provo/blob/master/modules/README.md) cover the Modules and Action Scripts structure, and explain how to create modules.
