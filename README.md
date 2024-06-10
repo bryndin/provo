@@ -1,4 +1,4 @@
-# Provo - Your Personal Lightweight Provisioner
+# Provo - Taming the Chaos of Automation Scripts
 
 Provo is a modular framework designed to streamline the setup and provisioning of environments. Whether you need to provision a new VM, install a specific shell, configure an editor, deploy your dotfiles, or set up any other software, Provo provides an easy-to-use, modular approach to manage these tasks.
 
