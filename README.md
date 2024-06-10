@@ -20,9 +20,26 @@ With Provo, you can configure your shell, prompt, and editor, unroll your develo
 
 ## Installation
 
+While you can clone Provo directly:
+
 ```shell
 git clone https://github.com/bryndin/provo
 ```
+
+It's typically recommended to fork the repository to customize it with your own modules:
+
+1. **Fork** the [Provo repository](https://github.com/bryndin/provo) on GitHub.
+2. **Clone** your forked repository:
+
+   ```shell
+   git clone https://github.com/<your-username>/provo.git
+   ```
+
+3. **Create and add your modules** to the `modules` directory.
+
+    See [Modules Docs](https://github.com/bryndin/provo/blob/master/modules/README.md).
+
+This approach allows you to easily manage your custom modules and keep them separate from the original Provo repository.
 
 ## Usage
 
