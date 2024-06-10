@@ -16,7 +16,7 @@ Provo's goal is to help you organize your collection of automation scripts into 
 
 - **Provisioning a New VM:** With scripted CLI tools quickly provision a new development VM to replace a misbehaving one or add more boxes to distribute the load.
 
-With Provo, you can configure your shell, prompt, editor, unroll your development setup, launch a VM, or migrate a host within seconds, boosting your productivity.
+With Provo, you can configure your shell, prompt, and editor, unroll your development setup, launch a VM, or migrate a host within seconds, boosting your productivity.
 
 ## Installation
 
@@ -51,7 +51,7 @@ Provo provides a framework to execute modules, which are essentially a way to or
 A *module* is a subdirectory of the `modules` directory. The files `install.sh`, `update.sh`, and `remove.sh` correspond to the `install`, `update`, and `remove` actions, respectively. They contain the logic of your module. These files are optional; only define the actions you need. You can add any other files your logic requires (e.g., `.vimrc`).
 
 > [!NOTE]
-> Module scripts are executed local to the module, not the `provo` directory (e.g., `cp .vimrc ~` will work as expected).
+> Module scripts are executed local to the module, not the `provo` directory (e.g., `cp .vimrc ~` works).
 
 ### Action Script Structure
 
