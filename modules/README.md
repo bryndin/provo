@@ -22,6 +22,23 @@ readonly ERR_INVALID_ARGUMENT=22   # EINVAL: Invalid argument
 readonly ERR_MISSING_DEPENDENCY=65 # ENOPKG: Package not installed 
 ```
 
+## Requirements Checking
+
+Each module *action* script declares a list of system-level dependencies required for its execution. These dependencies are specified as command names (e.g., `git`, `wget`), not *module* names.
+
+Before executing an *action*, Provo verifies the presence of these dependencies on the system. If any required dependency is not found, the *action* is skipped.
+
+**Example (`update.sh`):**
+
+```shell
+...
+REQUIREMENTS=(
+    zsh
+    git
+)
+...
+```
+
 ## Action Script Structure
 
 > [!IMPORTANT]
