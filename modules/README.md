@@ -9,6 +9,19 @@ A *module* is a subdirectory of the `modules` directory.
 > [!NOTE]
 > Module scripts are executed local to the module, not the `provo` directory (e.g., `cp .vimrc ~` works).
 
+## Error Handling
+
+Provo executes each module in a separate subshell. Any error code returned or exited by a module is propagated to the framework and ultimately returned by `provo`.
+
+Provo framework uses the following error codes:
+
+```shell
+# Error codes
+readonly ERR_NOT_FOUND=2           # ENOENT: No such file or directory
+readonly ERR_INVALID_ARGUMENT=22   # EINVAL: Invalid argument
+readonly ERR_MISSING_DEPENDENCY=65 # ENOPKG: Package not installed 
+```
+
 ## Action Script Structure
 
 > [!IMPORTANT]
