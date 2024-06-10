@@ -1,0 +1,122 @@
+#!/bin/bash
+
+# TODO: Add Usage docs
+
+# Define modules to execute (order matters)
+declare -a MODULES=(
+    "sample" # This is a noop example
+    # ... add more modules as needed
+)
+
+# --- Constants  -------------------------------------------------------------
+
+# Error codes
+readonly ERR_NOT_FOUND=2           # ENOENT: No such file or directory
+readonly ERR_INVALID_ARGUMENT=22   # EINVAL: Invalid argument
+readonly ERR_MISSING_DEPENDENCY=65 # ENOPKG: Package not installed
+
+# --- Load shared functions --------------------------------------------------
+source ./common.sh
+
+# --- Functions --------------------------------------------------------------
+
+# Function to run a specific action within a module
+run_module_action() {
+    local module_dir="$1"
+    local action="$2"
+
+    local script_file="${module_dir}/${action}.sh"
+
+    if [[ -f "$script_file" ]]; then
+        echo_info "Running $action for module: $module_dir"
+
+        # subshell isolates sourcing the script
+        (
+            cd "$module_dir" || return $?
+            RUN_MODULE=true source "${action}.sh"
+        )
+        subshell_exit_code=$?
+
+        if [[ $subshell_exit_code -ne 0 ]]; then
+            echo_error "Error running $action for module: $module_dir"
+            return $subshell_exit_code
+        fi
+    else
+        echo_error "Action script not found: $script_file"
+        return $ERR_NOT_FOUND
+    fi
+}
+
+# Function to check if a module has all of its dependencies installed
+check_dependencies() {
+    local module_dir="$1"
+    local action="$2"
+
+    local script_file="${module_dir}/${action}.sh"
+
+    if [[ -f "$script_file" ]]; then
+        # subshell isolates sourcing the script
+        (
+            RUN_MODULE=false source "$script_file"
+
+            # Check if REQUIREMENTS is actually an array
+            if [[ "$(declare -p REQUIREMENTS 2>/dev/null)" =~ "declare -a" ]]; then
+                for dependency in "${REQUIREMENTS[@]}"; do
+                    if ! command_exists "$dependency"; then
+                        echo_error "Error: Action '$action' for module '$module_dir' requires '$dependency'. Please install it."
+                        return $ERR_MISSING_DEPENDENCY
+                    fi
+                done
+            else
+                echo_warn "Requirements are not defined in $script_file. Consider adding REQUIREMENTS=() to it."
+            fi
+        )
+        return $?
+    fi
+}
+
+# --- Main Script Logic -----------------------------------------------------
+
+# Check for correct number of arguments
+if [[ $# -lt 1 ]]; then
+    echo_error "Usage: $0 [install|update|remove] [module1 module2 ...]"
+    exit $ERR_INVALID_ARGUMENT
+fi
+
+ACTION="$1"
+shift
+
+# If command line contains a list of modules, use them instead of the defaults
+if [[ $# -gt 0 ]]; then
+    MODULES=("$@")
+fi
+
+# Validate action argument
+if [[ ! "$ACTION" =~ ^(install|update|remove)$ ]]; then
+    echo_error "Invalid action: $ACTION"
+    echo_info "Usage: $0 [install|update|remove] [module1 module2 ...]"
+    exit $ERR_INVALID_ARGUMENT
+fi
+
+for module in "${MODULES[@]}"; do
+    module_dir="./modules/${module}"
+    if [[ -d "$module_dir" ]]; then
+        check_dependencies "$module_dir" "$ACTION"
+        exit_code=$?
+        if [[ $exit_code -ne 0 ]]; then
+            # unsafe to skip a module as order of modules could be important
+            exit $exit_code
+        fi
+
+        run_module_action "$module_dir" "$ACTION"
+        module_exit_code=$?
+        if [[ $module_exit_code -ne 0 ]]; then
+            # unsafe to skip a module as order of modules could be important
+            exit $module_exit_code
+
+        fi
+    else
+        echo_error "Module not found: $module"
+        exit $ERR_NOT_FOUND
+    fi
+done
