@@ -6,17 +6,17 @@ Provo's goal is to help you organize your collection of automation scripts into 
 
 ## Use Cases
 
-- **Working with Remote Hosts:** Connect to different VMs to investigate logs, perform active debugging, or leave a script running overnight. Run your setup and work comfortably, even if they were bare systems with outdated shells, basic prompts, and missing needed packages.
+- **Working with Remote Hosts:** Connect to different VMs to investigate logs, perform active debugging, or leave a script running overnight. Run your setup and work within the comfort of your custom environment, even if they were bare systems with outdated shells, basic prompts, and missing needed packages.
 
 - **Configuring a New Developer Laptop:**  Migrate years of fine-tuning your development environment to a new laptop without hassle. Don't worry if your old laptop is gone, the image is incompatible, or cloud restore is hanging – with a modular system, it's easy to keep setup scripts up-to-date and get running in no time.
 
 - **Synchronizing Multiple Environments:**  Maintain a consistent look and feel across your macOS laptop, Debian VMs, and Windows desktop with WSL2 and Ubuntu.
 
-- **Moving Your Website to a New Host:** Seamlessly transition your website from Amazon AWS to Google Cloud (or any other host) and recreate all your setups, including MySQL, Apache, WordPress, etc.
+- **Moving Your Website to a New Host:** Seamlessly transition your website from Amazon AWS to Google Cloud (or any other host) by recreating all your setups, including MySQL, Apache, WordPress, etc.
 
 - **Provisioning a New VM:** With scripted CLI tools quickly provision a new development VM to replace a misbehaving one or add more boxes to distribute the load.
 
-With Provo, you can configure your shell, prompt, and editor, unroll your development setup, launch a VM, or migrate a host within seconds, boosting your productivity.
+With Provo and your custom modules, you can configure your shell, prompt, and editor, unroll your development setup, launch a VM, or migrate a host within seconds, boosting your productivity.
 
 ## Installation
 
