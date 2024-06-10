@@ -1,8 +1,8 @@
 # Provo - Taming the Chaos of Automation Scripts
 
-Provo is a modular framework designed to streamline the setup and provisioning of environments. Whether you need to provision a new VM, install a specific shell, configure an editor, deploy your dotfiles, or set up any other software, Provo provides an easy-to-use, modular approach to manage these tasks.
+Provo is a modular framework designed to streamline the automation of your workflows, especially when it comes to setting up and provisioning environments. Think of it as a powerful manager for all your automation scripts.
 
-Provo's goal is to help you organize your collection of automation scripts into a system of reusable modules. You can clone this system anywhere and, with a single command, make any machine feel like home and be 100% productive within seconds.
+Provo's strength lies in its modularity. It helps you organize your collection of automation scripts into a system of reusable modules. Want to quickly set up a new VM? Configure your editor just the way you like it? Deploy your dotfiles? Provo makes it a breeze. Simply clone your Provo setup to any machine and, with a single command, run the workflow you need.
 
 ## Use Cases
 
