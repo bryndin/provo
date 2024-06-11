@@ -18,6 +18,13 @@ Provo's strength lies in its modularity. It helps you organize your collection o
 
 With Provo and your custom modules, you can configure your shell, prompt, and editor, unroll your development setup, launch a VM, or migrate a host within seconds, boosting your productivity.
 
+## Features
+
+- **Modular Design:** Promotes organizing your automation scripts into reusable, self-contained modules.
+- **Dependency Management:** Verifies that declared requirements are met before running any module actions.
+- **Error Handling:** Propagates error codes from individual modules to the framework, allowing for easy identification and debugging.
+- **Safe Execution:** Stops execution if any error or missing dependency is detected, ensuring the correct order of module execution.
+
 ## Installation
 
 While you can clone Provo directly:
