@@ -5,6 +5,14 @@
 ##############################################################################
 
 #-----------------------------------------------------------------------------
+# --- Constants  -------------------------------------------------------------
+#-----------------------------------------------------------------------------
+
+# Error codes
+ERR_NOT_IMPLEMENTED=38    # ENOSYS: Function not implemented
+ERR_MISSING_DEPENDENCY=65 # ENOPKG: Package not installed
+
+#-----------------------------------------------------------------------------
 #-- Custom echo functions ----------------------------------------------------
 #-----------------------------------------------------------------------------
 
@@ -53,8 +61,11 @@ echo_error() {
 
 # Function to print an error message in red and exit
 error() {
-    echo_error "$1"
-    exit 1
+    local error_code=$1
+    local message=$2
+
+    echo_error "$message"
+    exit "$error_code"
 }
 
 #-----------------------------------------------------------------------------
@@ -70,6 +81,8 @@ command_exists() {
 install_package() {
     local package="$1"
 
+    local pfx="[provo:install_package()]"
+
     if ! command_exists "$package"; then
         # Detect OS
         local os=$(uname -s)
@@ -77,30 +90,30 @@ install_package() {
             Linux)
                 if command_exists apt-get; then
                     sudo apt-get update && \
-                    sudo apt-get install -y "$package" || error "Failed to install $package with apt-get"
+                    sudo apt-get install -y "$package" || error $? "$pfx Failed to install $package with apt-get"
                 elif command_exists pacman; then
-                    sudo pacman -Syu --noconfirm "$package" || error "Failed to install $package with pacman"
+                    sudo pacman -Syu --noconfirm "$package" || error $? "$pfx Failed to install $package with pacman"
                 elif command_exists dnf; then
-                    sudo dnf install -y "$package" || error "Failed to install $package with dnf"
+                    sudo dnf install -y "$package" || error $? "$pfx Failed to install $package with dnf"
                 elif command_exists yum; then
-                    sudo yum install -y "$package" || error "Failed to install $package with yum"
+                    sudo yum install -y "$package" || error $? "$pfx Failed to install $package with yum"
                 else
-                    error "Unsupported package manager for Linux."
+                    error $ERR_NOT_IMPLEMENTED "$pfx Unsupported package manager for Linux."
                 fi
                 ;;
             Darwin)
                 if command_exists brew; then
-                    brew install "$package" || error "Failed to install $package with Homebrew"
+                    brew install "$package" || error $? "$pfx Failed to install $package with Homebrew"
                 else
-                    error "Homebrew is not installed. Please install it first."
+                    error $ERR_MISSING_DEPENDENCY "$pfx Homebrew is not installed. Please install it first."
                 fi
                 ;;
             *)
-                error "Unsupported operating system: $os"
+                error $ERR_NOT_IMPLEMENTED "$pfx Unsupported operating system: $os"
                 ;;
         esac
     else
-        echo_warn "$package is already installed."
+        echo_warn "$pfx $package is already installed."
     fi
 }
 

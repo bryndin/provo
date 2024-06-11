@@ -11,9 +11,10 @@ declare -a MODULES=(
 # --- Constants  -------------------------------------------------------------
 
 # Error codes
-readonly ERR_NOT_FOUND=2           # ENOENT: No such file or directory
-readonly ERR_INVALID_ARGUMENT=22   # EINVAL: Invalid argument
-readonly ERR_MISSING_DEPENDENCY=65 # ENOPKG: Package not installed
+ERR_NOT_FOUND=2           # ENOENT: No such file or directory
+ERR_INVALID_ARGUMENT=22   # EINVAL: Invalid argument
+ERR_NOT_IMPLEMENTED=38    # ENOSYS: Function not implemented
+ERR_MISSING_DEPENDENCY=65 # ENOPKG: Package not installed
 
 # --- Load shared functions --------------------------------------------------
 source ./common.sh
