@@ -64,7 +64,10 @@ error() {
     local error_code=$1
     local message=$2
 
-    echo_error "$message"
+    # pfx has the name of the function that called this function
+    local pfx="provo:${FUNCNAME[1]}"
+
+    echo_error "[$pfx] $message"
     exit "$error_code"
 }
 
@@ -81,8 +84,6 @@ command_exists() {
 install_package() {
     local package="$1"
 
-    local pfx="[provo:install_package()]"
-
     if ! command_exists "$package"; then
         # Detect OS
         local os=$(uname -s)
@@ -90,31 +91,32 @@ install_package() {
             Linux)
                 if command_exists apt-get; then
                     sudo apt-get update && \
-                    sudo apt-get install -y "$package" || error $? "$pfx Failed to install $package with apt-get"
+                    sudo apt-get install -y "$package" || error $? "Failed to install $package with apt-get"
                 elif command_exists pacman; then
-                    sudo pacman -Syu --noconfirm "$package" || error $? "$pfx Failed to install $package with pacman"
+                    sudo pacman -Syu --noconfirm "$package" || error $? "Failed to install $package with pacman"
                 elif command_exists dnf; then
-                    sudo dnf install -y "$package" || error $? "$pfx Failed to install $package with dnf"
+                    sudo dnf install -y "$package" || error $? "Failed to install $package with dnf"
                 elif command_exists yum; then
-                    sudo yum install -y "$package" || error $? "$pfx Failed to install $package with yum"
+                    sudo yum install -y "$package" || error $? "Failed to install $package with yum"
                 else
-                    error $ERR_NOT_IMPLEMENTED "$pfx Unsupported package manager for Linux."
+                    error $ERR_NOT_IMPLEMENTED "Unsupported package manager for Linux."
                 fi
                 ;;
             Darwin)
                 if command_exists brew; then
-                    brew install "$package" || error $? "$pfx Failed to install $package with Homebrew"
+                    brew install "$package" || error $? "Failed to install $package with Homebrew"
                 else
-                    error $ERR_MISSING_DEPENDENCY "$pfx Homebrew is not installed. Please install it first."
+                    error $ERR_MISSING_DEPENDENCY "Homebrew is not installed. Please install it first."
                 fi
                 ;;
             *)
-                error $ERR_NOT_IMPLEMENTED "$pfx Unsupported operating system: $os"
+                error $ERR_NOT_IMPLEMENTED "Unsupported operating system: $os"
                 ;;
         esac
     else
-        echo_warn "$pfx $package is already installed."
+        echo_warn "$package is already installed."
     fi
 }
 
 #-----------------------------------------------------------------------------
+
